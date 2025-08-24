@@ -10,29 +10,27 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-  const [code, setCode]=useState(`function sum(){
+  const [code, setCode] = useState(`function sum(){
   return 1+1
-}`);
+}`)
 
-  const [review, setReview] = useState("");
+  const [review, setReview] = useState("")
 
   useEffect(() => {
     prism.highlightAll()
   }, [review])
 
   async function reviewCode() {
-const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
-const url = `${backendUrl}/ai/get-review`;
-try {
-const response = await axios.post(url, { code });
-setReview(response.data);
-} catch (error) {
-console.error('API call error:', error);
-setReview('Error fetching review. Please try again.');
-}
-}
-
-
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || ''
+    const url = `${backendUrl}/ai/get-review`
+    try {
+      const response = await axios.post(url, { code })
+      setReview(response.data)
+    } catch (error) {
+      console.error('API call error:', error)
+      setReview('Error fetching review. Please try again.')
+    }
+  }
 
   return (
     <>
