@@ -14,35 +14,44 @@ function App() {
   return 1+1
 }`);
 
-const[review, setReview]=useState("");
+  const [review, setReview] = useState("");
 
-  useEffect(()=>{
+  useEffect(() => {
     prism.highlightAll()
-  })
+  }, [review])
 
-  async function reviewCode(){
-      const response=await axios.post('http://localhost:3000/ai/get-review', {code})
+  async function reviewCode() {
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+    try {
+      const response = await axios.post(`${backendUrl}/ai/get-review`, { code })
       setReview(response.data)
+    } catch (error) {
+      setReview("Error fetching review. Please try again.")
+      console.error("API call error:", error);
     }
+  }
 
   return (
     <>
-    <main>
-      <div className="left">
-        <div className="code">
-          <Editor
+      <main>
+        <div className="left">
+          <div className="code">
+            <Editor
               value={code}
               onValueChange={code => setCode(code)}
               highlight={code => prism.highlight(code, prism.languages.javascript, "javascript")}
               padding={10}
-              style={{
-              }}
+              style={{}}
             />
+          </div>
+          <div onClick={reviewCode} className="review">Review</div>
         </div>
-        <div onClick={reviewCode} className="review">Review</div>
-      </div>
-      <div className="right"><Markdown rehypePlugins={[ rehypeHighlight ]}>{review}</Markdown></div>
-    </main>
+        <div className="right">
+          <Markdown rehypePlugins={[rehypeHighlight]}>
+            {review}
+          </Markdown>
+        </div>
+      </main>
     </>
   )
 }
