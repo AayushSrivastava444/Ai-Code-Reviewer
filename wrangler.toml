@@ -1,3 +1,0 @@
-name = "ai-code-reviewer"
-compatibility_date = "2025-08-24"
-main = "Backend/Server.js"
