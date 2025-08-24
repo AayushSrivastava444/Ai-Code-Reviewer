@@ -21,15 +21,18 @@ function App() {
   }, [review])
 
   async function reviewCode() {
-    const backendUrl = process.env.REACT_APP_BACKEND_URL;
-    try {
-      const response = await axios.post(`${backendUrl}/ai/get-review`, { code })
-      setReview(response.data)
-    } catch (error) {
-      setReview("Error fetching review. Please try again.")
-      console.error("API call error:", error);
-    }
-  }
+const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+const url = `${backendUrl}/ai/get-review`;
+try {
+const response = await axios.post(url, { code });
+setReview(response.data);
+} catch (error) {
+console.error('API call error:', error);
+setReview('Error fetching review. Please try again.');
+}
+}
+
+
 
   return (
     <>
